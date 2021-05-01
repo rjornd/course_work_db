@@ -7,4 +7,4 @@ const User = new Schema({
     //posts: [{type: ObjectId, ref: 'Post'}]
 });
 
-module.exports = model('User', User);
+module.exports = model('User', User); 

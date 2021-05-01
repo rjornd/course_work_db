@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken")
 const router = new Router()
 const config = require('config');
 const authMiddleware = require('../middleware/auth.middleware')
-
+const MySQL = require('mysql');
+const mysqldb = require('../models/db');
 
 router.post('/registration',
 [
@@ -94,6 +95,21 @@ async (req, res) => {
     {
         console.log(e)
         res.send({message: 'Server error'})
+    }
+})
+
+
+router.get('/try',
+async (req, res) => {
+    try{
+        console.log('tyt');
+        let results = await mysqldb.all();
+        res.json(results)
+    } catch(e) 
+    {
+        console.log(e)
+        res.send({message: 'Server error'})
+        res.sendStatus(500);
     }
 })
 
