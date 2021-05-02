@@ -11,7 +11,7 @@ const mysqldb = require('../models/db');
 
 router.post('/registration',
 [
-    check('nickname', 'Uncorrect nickname').isLength({min:3, max:12}),
+    check('login', 'Uncorrect nickname').isLength({min:3, max:12}),
     check('password', 'Password must be longer than 3 and shorter than 12').isLength({min:3, max:12})
 ],
 async (req, res) => {
@@ -22,18 +22,17 @@ async (req, res) => {
             return res.status(400).json({message: "Uncorrect request", errors})
         }
 
-        const {nickname, password} = req.body;
+        const {first_name, last_name, login, password} = req.body;
 
-        const candidate = await User.findOne({nickname})
-
-        if (candidate){
-            return res.status(400).json({message: `User with nickname ${nickname} already exists`})
+        const user = await mysqldb.findOne(login)
+        if (user?.watchmanid){
+            return res.status(400).json({message: `User with login ${login} already exists`})
         }
 
         const hashPassword = await bcrypt.hash(password, 8)
-        const user = new User({nickname, password: hashPassword})
-        await user.save()
-        return res.json({message: `User ${nickname} was created`})
+        req.body.password = hashPassword;
+        await mysqldb.reg(req.body)
+        return res.json(req.body)
 
     } catch(e) {
         console.log(e)
@@ -49,11 +48,11 @@ async (req, res) => {
         {
             return res.status(400).json({message: "Uncorrect request", errors})
         }
-        const {nickname, password} = req.body;
+        const {login, password} = req.body;
         
-        const user = await User.findOne({nickname})
-        
-        if(!user) 
+        const user = await mysqldb.findOne(login)
+        console.log(user)
+        if(!user?.watchmanid)
         {
             return res.status(400).json({message: "user not found :( "})
         }
@@ -62,14 +61,10 @@ async (req, res) => {
         {
             return res.status(400).json({message: "invalid password"})
         }
-        const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
+        const token = jwt.sign({id: user.watchmanid}, config.get("secretKey"), {expiresIn: "1h"})
         return res.json({
             token,
-            user: {
-                id: user.id,
-                nickname: user.nickname,
-                avatar: user.avatar
-            }
+            user
         })
     } catch(e) 
     {
@@ -81,15 +76,11 @@ async (req, res) => {
 router.get('/auth', authMiddleware,
 async (req, res) => {
     try{
-        const user = await User.findOne({_id: req.user.id})
-        const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
+        const user =  await mysqldb.findOne(req.body.login)
+        const token = jwt.sign({id: user.watchmanid}, config.get("secretKey"), {expiresIn: "1h"})
         return res.json({
             token,
-            user: {
-                id: user.id,
-                nickname: user.nickname,
-                avatar: user.avatar
-            }
+            user
         })
     } catch(e) 
     {
@@ -102,13 +93,12 @@ async (req, res) => {
 router.get('/try',
 async (req, res) => {
     try{
-        console.log('tyt');
-        let results = await mysqldb.all();
+        let results = await mysqldb.all(req);
         res.json(results)
     } catch(e) 
     {
         console.log(e)
-        res.send({message: 'Server error'})
+        res.send({message: e?.sqlMessage})
         res.sendStatus(500);
     }
 })
