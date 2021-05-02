@@ -14,7 +14,7 @@ const Watchman = () => {
         
         <label>
             <div>
-            Привет, {currentUser.nickname}
+            Привет, {currentUser.first_name + " " + currentUser.last_name}
         </div>
         <label>
         <InputGroup className="mb-3">

@@ -4,15 +4,18 @@ import Input from "../../utils/input/Input";
 import {registration} from "../../actions/user";
 
 const Registration = () => {
-    const [nickname, setNickname] = useState("")
+    const [user_login, setLogin] = useState("")
     const [password, setPassword] = useState("")
-
+    const [first_name, setFirstName] = useState("")
+    const [last_name, setLastName] = useState("")
     return (
         <div className='authorization'>
             <div className="authorization__header">Регистрация</div>
-            <Input value={nickname} setValue={setNickname} type="text" placeholder="Введите nickname..."/>
+            <Input value={first_name} setValue={setFirstName} type="text" placeholder="Введите имя..."/>
+            <Input value={last_name} setValue={setLastName} type="text" placeholder="Введите фамилию..."/>
+            <Input value={user_login} setValue={setLogin} type="text" placeholder="Введите login..."/>
             <Input value={password} setValue={setPassword} type="password" placeholder="Введите пароль..."/>
-            <button className="authorization__btn" onClick={() => registration(nickname, password)}>Зарегистрироваться</button>
+            <button className="authorization__btn" onClick={() => registration(first_name, last_name,user_login, password)}>Зарегистрироваться</button>
         </div>
     );
 };

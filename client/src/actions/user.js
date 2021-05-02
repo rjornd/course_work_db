@@ -1,10 +1,13 @@
 import axios from 'axios'
 import { API_URL } from '../config'
 import {setUser} from '../reducers/userReducer'
-export const registration = async (nickname, password) => {
+
+export const registration = async (first_name, last_name,login, password) => {
     try {
         const response = await axios.post(`${API_URL}api/auth/registration`, {
-            nickname,
+            first_name,
+            last_name,
+            login,
             password
         })
     } catch (e) {
@@ -13,11 +16,11 @@ export const registration = async (nickname, password) => {
 
 }
 
-export const login =  (nickname, password) => {
+export const login =  (login, password) => {
     return async dispatch => {
     try {
         const response = await axios.post(`${API_URL}api/auth/login`, {
-            nickname,
+            login,
             password
         })
         dispatch(setUser(response.data.user))
@@ -28,7 +31,7 @@ export const login =  (nickname, password) => {
     }
 }
 
-export const auth =  (nickname, password) => {
+export const auth =  (login, password) => {
     return async dispatch => {
     try {
         const response = await axios.get(
@@ -45,36 +48,3 @@ export const auth =  (nickname, password) => {
     }
 }
 
-export const uploadAvatar =  (file) => {
-        return async dispatch => {
-        try {
-            const formData = new FormData()
-            formData.append('file', file)
-            const response = await axios.post(
-                `${API_URL}api/files/avatar`, formData,
-            {
-                headers:{Authorization: `Bearer ${localStorage.getItem('token')}`}
-            }
-            )
-            dispatch(setUser(response.data))
-        } catch (e) {
-            console.log(e)
-        }
-    }
-}
-
-export const deleteAvatar =  () => {
-    return async dispatch => {
-    try {
-        const response = await axios.delete(
-            `${API_URL}api/files/avatar`,
-        {
-            headers:{Authorization: `Bearer ${localStorage.getItem('token')}`}
-        }
-        )
-        dispatch(setUser(response.data))
-    } catch (e) {
-        console.log(e)
-    }
-}
-}

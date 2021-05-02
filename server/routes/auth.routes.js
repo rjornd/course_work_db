@@ -51,7 +51,6 @@ async (req, res) => {
         const {login, password} = req.body;
         
         const user = await mysqldb.findOne(login)
-        console.log(user)
         if(!user?.watchmanid)
         {
             return res.status(400).json({message: "user not found :( "})
