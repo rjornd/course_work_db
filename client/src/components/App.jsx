@@ -8,12 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { auth } from "../actions/user";
 import Watchman from "./watchman/Watchman";
+import { getEmployees } from '../actions/employees';
 
 function App() {
   const isAuth = useSelector(state => state.user.isAuth)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(auth())
+    
   }, [] )
   return (
     <BrowserRouter>

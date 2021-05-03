@@ -37,7 +37,19 @@
         });
     };
 
-    mysqldb.findOne = (login) => {
+    mysqldb.findOne = (watchmanid) => {
+        return new Promise((resolve, reject) => {
+            pool.query('Select * from watchmans where watchmanid = ?', [watchmanid],
+                (err, rows, fields) => {
+                if (err) {
+                    return reject(err);
+                }
+                    return resolve(rows[0]);
+                });
+        });
+    };
+
+    mysqldb.findLogin = (login) => {
         return new Promise((resolve, reject) => {
             pool.query('Select * from watchmans where login = ?', [login],
                 (err, rows, fields) => {
@@ -48,5 +60,19 @@
                 });
         });
     };
+
+    mysqldb.employees = () =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('select * from employees', (err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+    
+
         
 module.exports = mysqldb

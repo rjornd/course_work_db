@@ -7,11 +7,11 @@ import './watchman.css'
 const EmployeeItem = ({employee}) => {
     const dispatch = useDispatch()
     const currentUser = useSelector(state => state.user.currentUser)
-    return ( 
+    return (
         <tr>
-            <td>{employee.id}</td>
-            <td>{employee.firstName}</td>
-            <td>{employee.lastName}</td>
+            <td>{employee.emplid}</td>
+            <td>{employee.first_name}</td>
+            <td>{employee.last_name}</td>
             <td><Button>Выдать ключ</Button></td>
         </tr>
     );

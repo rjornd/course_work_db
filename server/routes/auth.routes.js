@@ -24,7 +24,7 @@ async (req, res) => {
 
         const {first_name, last_name, login, password} = req.body;
 
-        const user = await mysqldb.findOne(login)
+        const user = await mysqldb.findLogin(login)
         if (user?.watchmanid){
             return res.status(400).json({message: `User with login ${login} already exists`})
         }
@@ -50,7 +50,7 @@ async (req, res) => {
         }
         const {login, password} = req.body;
         
-        const user = await mysqldb.findOne(login)
+        const user = await mysqldb.findLogin(login)
         if(!user?.watchmanid)
         {
             return res.status(400).json({message: "user not found :( "})
@@ -63,7 +63,11 @@ async (req, res) => {
         const token = jwt.sign({id: user.watchmanid}, config.get("secretKey"), {expiresIn: "1h"})
         return res.json({
             token,
-            user
+            user : {
+                watchmanid: user.watchmanid,
+                first_name: user.first_name,
+                last_name: user.last_name
+            }
         })
     } catch(e) 
     {
@@ -75,11 +79,15 @@ async (req, res) => {
 router.get('/auth', authMiddleware,
 async (req, res) => {
     try{
-        const user =  await mysqldb.findOne(req.body.login)
+        const user =  await mysqldb.findOne(req.user.id)
         const token = jwt.sign({id: user.watchmanid}, config.get("secretKey"), {expiresIn: "1h"})
         return res.json({
             token,
-            user
+            user: {
+                watchmanid: user.watchmanid,
+                first_name: user.first_name,
+                last_name: user.last_name
+            }
         })
     } catch(e) 
     {
