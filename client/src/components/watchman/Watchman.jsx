@@ -7,6 +7,8 @@ import './watchman.css'
 import EmployeeItem from './employeeItem/employeeItem';
 import { getEmployees } from '../../actions/employees';
 import EmployeeList from './employeeItem/employeelist';
+import PopupGet from './PopupGet';
+import PopupTake from './PopupTake';
 const Watchman = () => {
     const dispatch = useDispatch()
     const currentUser = useSelector(state => state.user.currentUser)
@@ -16,12 +18,12 @@ const Watchman = () => {
     }, [currentUser] )
     return ( 
         
-        <label>
+        <label onClick={e => e.preventDefault()}>
             <div>
             Привет, {currentUser.first_name + " " + currentUser.last_name}
         </div>
         <label>
-        <InputGroup className="mb-3">
+        <InputGroup className="mb-3" onClick={e => e.preventDefault()}>
         <InputGroup.Prepend>
           <InputGroup.Text>Фамилия</InputGroup.Text>
         </InputGroup.Prepend>
@@ -33,18 +35,19 @@ const Watchman = () => {
         <Button>Выборка</Button>
       </InputGroup>
       </label>
-        <div className = "wrap">
-        <Table striped bordered hover size="sm">
+        <div >
+        <Table striped bordered size="sm" onClick={e => e.preventDefault()}>
             <thead>
                 <tr>
                 <th>id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th></th>
+                <th>Имя</th>
+                <th>Фамилия</th>
                 </tr>
             </thead>
             <EmployeeList/>
     </Table>
+    <PopupGet/>
+    <PopupTake/>
     </div>
     </label>
         

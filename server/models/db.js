@@ -72,6 +72,30 @@
             })
         })
     }
+
+    mysqldb.getCabs = (emplid) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('SELECT * FROM accesslist WHERE emplid = ?', [emplid] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.getKeys = (emplid) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('SELECT * FROM bd1.keys WHERE employeeid = ?', [emplid] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
     
 
         

@@ -17,4 +17,32 @@ async (req, res) => {
     }
 })
 
+router.post('/cabs', authMiddleware,
+async (req, res) => {
+    try{
+        
+        let cabs = await mysqldb.getCabs(req.body.employee.emplid);
+        res.json(cabs)
+    } catch(e) 
+    {
+        console.log(e)
+        res.send({message: e?.sqlMessage})
+        res.sendStatus(500);
+    }
+})
+
+router.post('/keys', authMiddleware,
+async (req, res) => {
+    try{
+        
+        let keys = await mysqldb.getKeys(req.body.employee.emplid);
+        res.json(keys)
+    } catch(e) 
+    {
+        console.log(e)
+        res.send({message: e?.sqlMessage})
+        res.sendStatus(500);
+    }
+})
+
 module.exports = router
