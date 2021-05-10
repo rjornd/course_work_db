@@ -96,7 +96,90 @@
             })
         })
     }
+
+    mysqldb.takeKey = (keyid) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('UPDATE `keys` SET employeeid = NULL WHERE keyid = ?', [keyid] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
     
+    mysqldb.addAvCabinet = (emplid, cabinet) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('INSERT INTO accesslist(emplid, cabinet) VALUES (?, ?)', [emplid, cabinet] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.removeAvCabinet = (id) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('DELETE FROM `accesslist` WHERE id = ?', [id] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.keysForThisCab = (cabinet) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('SELECT * FROM `keys` WHERE cabinet = ?', [cabinet] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.allKeys = () =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('SELECT * from `keys`', (err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.giveKey = (employeeid, keyid) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('UPDATE `keys` SET employeeid = ? WHERE keyid = ?', [employeeid, keyid] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.removeKey = (keyid) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('DELETE FROM `keys` WHERE keyid = ?', [keyid] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
 
         
 module.exports = mysqldb

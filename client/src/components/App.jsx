@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { auth } from "../actions/user";
 import Watchman from "./watchman/Watchman";
 import { getEmployees } from '../actions/employees';
+import Keys from './Keys/Keys';
 
 function App() {
   const isAuth = useSelector(state => state.user.isAuth)
@@ -33,6 +34,7 @@ function App() {
           : 
           <Switch>
             <Route exact path = "/" component = {Watchman}/>
+            <Route exact path = "/keys" component = {Keys}/>
             <Redirect to = "/"/>
           </Switch>
         }

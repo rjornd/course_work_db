@@ -35,7 +35,7 @@ const Watchman = () => {
         <Button>Выборка</Button>
       </InputGroup>
       </label>
-        <div >
+        <div className="tab-wrapper">
         <Table striped bordered size="sm" onClick={e => e.preventDefault()}>
             <thead>
                 <tr>

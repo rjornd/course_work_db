@@ -36,3 +36,17 @@
 .popup input {
   margin: 20px 0px;
 }
+
+.table-wrapper {
+  width: 370px;
+  max-height: 200px;
+  overflow: auto;
+  display:inline-block;
+}
+
+.tab-wrapper {
+  width: 640px;
+  max-height: 400px;
+  overflow: auto;
+  display:inline-block;
+}

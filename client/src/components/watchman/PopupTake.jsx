@@ -6,6 +6,7 @@ import {useRef} from 'react'
 import { setPopupTakeDisplay } from '../../reducers/employeeReducer';
 import { Button, Table } from 'react-bootstrap';
 import KeyList from './keyitem/keylist';
+import './watchman.css'
 const PopupTake = () =>{
     const [cabinet, setCabinet] = useState('')
     const popupDisplay = useSelector(state => state.employees.popupTakeDisplay)
@@ -34,15 +35,20 @@ const PopupTake = () =>{
                     <div className="popup__title">Сотрудник: {selectedEmployee?.first_name + " " + selectedEmployee?.last_name}</div>
                     <Button className="popup__close" onClick ={()=> dispatch(setPopupTakeDisplay('none'))} variant="outline-primary">X</Button>
                 </div>
+                <div className ="table-wrapper">
                 <Table striped bordered hover size="sm" onClick={e => e.preventDefault()}>
                 <thead>
                     <tr>
                         <th>Взятые ключи</th>
                     </tr>
+                    <tr>
+                        <th>Кабинет</th>
+                        <th>id ключа</th>
+                    </tr>
                 </thead>
                 <KeyList/>
                 </Table>
-                
+                </div>
             </div>
         </div>
     );

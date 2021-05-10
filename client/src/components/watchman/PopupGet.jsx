@@ -6,6 +6,8 @@ import {useRef} from 'react'
 import { setPopupGetDisplay } from '../../reducers/employeeReducer';
 import { Button, Table } from 'react-bootstrap';
 import CabinetList from './employeeItem/cabinetItem/cabinetlist';
+import { addAvCabinet } from '../../actions/employees';
+import './watchman.css'
 const PopupGet = () =>{
     const [cabinet, setCabinet] = useState('')
     const popupDisplay = useSelector(state => state.employees.popupGetDisplay)
@@ -14,13 +16,13 @@ const PopupGet = () =>{
 
     function createHandler(childRef) 
     {
-        // выдать ключ dispatch(createDir(currentDir, dirName))
-        dispatch(setPopupGetDisplay('none'))
+        dispatch(addAvCabinet(selectedEmployee, cabinet))
         childRef.current.HandleClear();
     }
 
     function clickHandle(event)
     {
+        
         event.stopPropagation()
         event.preventDefault()
     }
@@ -34,7 +36,8 @@ const PopupGet = () =>{
                     <div className="popup__title">Сотрудник: {selectedEmployee?.first_name + " " + selectedEmployee?.last_name}</div>
                     <Button className="popup__close" onClick ={()=> dispatch(setPopupGetDisplay('none'))} variant="outline-primary">X</Button>
                 </div>
-                <Table striped bordered hover size="sm" onClick={e => e.preventDefault()}>
+                <div className="table-wrapper">
+                <Table responsive striped bordered hover size="sm" onClick={e => e.preventDefault()}>
                 <thead>
                     <tr>
                         <th>Доступные кабинеты</th>
@@ -43,6 +46,7 @@ const PopupGet = () =>{
                 <CabinetList/>
                 
                 </Table>
+                </div>
                 <Input ref = {childRef} type ="text" placeholder = "Добавить доступный кабинет" value={cabinet} setValue={setCabinet}/>
                 <Button className="popup__create" onClick={() => createHandler(childRef)}>Добавить</Button>
             </div>

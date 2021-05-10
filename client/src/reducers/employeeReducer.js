@@ -4,14 +4,17 @@ const SET_POPUP_GET_DISPLAY = "SET_POPUP_GET_DISPLAY"
 const SET_POPUP_TAKE_DISPLAY = "SET_POPUP_TAKE_DISPLAY"
 const SET_AVAILABLE_CABS = "SET_AVAILABLE_CABS"
 const SET_EMPL_KEYS = "SET_EMPL_KEYS"
-
+const SET_KEYS_FOR_THIS_CAB = "SET_KEYS_FOR_THIS_CAB"
+const SET_ALL_KEYS = "SET_ALL_KEYS"
 const defaultState = {
     employees: [],
     selectedEmployee: {},
     popupGetDisplay: 'none',
     popupTakeDisplay: 'none',
     availableCabs: [],
-    employeeKeys: []
+    employeeKeys: [],
+    keysForThisCab: [],
+    allKeys: []
 }
 export default function employeeReducer(state = defaultState, action)
 {
@@ -47,7 +50,17 @@ export default function employeeReducer(state = defaultState, action)
                 ...state,
                 employeeKeys: action.payload
             }
-        default: 
+        case SET_KEYS_FOR_THIS_CAB:
+            return {
+                ...state,
+                keysForThisCab: action.payload
+            }
+        case SET_ALL_KEYS:
+            return {
+                ...state,
+                allKeys: action.payload
+            }
+        default:
             return state;
     }
 }
@@ -57,3 +70,5 @@ export const setPopupGetDisplay = display => ({type: SET_POPUP_GET_DISPLAY, payl
 export const setPopupTakeDisplay = display => ({type: SET_POPUP_TAKE_DISPLAY, payload: display})
 export const setAvailableCabs = cabs => ({type: SET_AVAILABLE_CABS, payload: cabs})
 export const setEmplKeys = keys => ({type: SET_EMPL_KEYS, payload: keys})
+export const setkeysForThisCab = keys => ({type: SET_KEYS_FOR_THIS_CAB, payload: keys})
+export const setAllKeys = keys => ({type: SET_ALL_KEYS, payload: keys})
