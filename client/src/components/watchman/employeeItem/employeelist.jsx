@@ -5,12 +5,17 @@ const EmployeeList = () => {
     const employees = useSelector(state => state.employees.employees)
     
     return ( 
-        <tbody>
+        
+       employees? <tbody>
             {employees.map(
                 employee =>
                 <EmployeeItem key = {employee.emplid} employee = {employee}/>
             )}
+        </tbody> : 
+        <tbody>
+            Ожидание получения списка сотрудников.
         </tbody>
+        
     );
 };
 export default EmployeeList;

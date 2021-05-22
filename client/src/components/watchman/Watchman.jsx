@@ -9,6 +9,9 @@ import { getEmployees } from '../../actions/employees';
 import EmployeeList from './employeeItem/employeelist';
 import PopupGet from './PopupGet';
 import PopupTake from './PopupTake';
+import PopupAdd from './PopupAdd'
+import { setPopupAddDisplay } from '../../reducers/employeeReducer';
+import PopupChange from './PopupChange';
 const Watchman = () => {
     const dispatch = useDispatch()
     const currentUser = useSelector(state => state.user.currentUser)
@@ -16,6 +19,10 @@ const Watchman = () => {
     useEffect(() => {
       dispatch(getEmployees())
     }, [currentUser] )
+
+    function addEmployeeHandle() {
+      dispatch(setPopupAddDisplay('flex'))
+    }
     return ( 
         
         <label onClick={e => e.preventDefault()}>
@@ -48,7 +55,10 @@ const Watchman = () => {
     </Table>
     <PopupGet/>
     <PopupTake/>
+    <PopupAdd/>
+    <PopupChange/>
     </div>
+    <Button onClick = {(e) => addEmployeeHandle(e)}>Добавить сотрудника</Button>
     </label>
         
     );

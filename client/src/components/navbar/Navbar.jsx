@@ -15,6 +15,8 @@ const Navbar = () => {
             <NavLink to ='/'><div className="navbar__header">АС Вахтера</div></NavLink>
                 {isAuth && <NavLink to ='/'><div className="navbar__header">Сотрудники</div></NavLink>}
                 {isAuth && <NavLink to ='/keys'><div className="navbar__header">Ключи</div></NavLink>}
+                {isAuth && <NavLink to ='/cabs'><div className="navbar__header">Кабинеты</div></NavLink>}
+                {isAuth && <NavLink to ='/logs'><div className="navbar__header">Журнал</div></NavLink>}
                 {!isAuth && <div className="navbar__login"><NavLink to="/login">Войти</NavLink></div>}
                 {!isAuth && <div className="navbar__registration"><NavLink to="/registration">Регистрация</NavLink></div>}
                 {isAuth && <Button onClick={()=> dispatch(logout())} variant="outline-primary">Выход</Button>}

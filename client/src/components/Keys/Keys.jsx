@@ -1,18 +1,27 @@
-import { useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
+import { Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { allKeys } from "../../actions/employees";
+import { addKey, allKeys } from "../../actions/employees";
+import Input from "../../utils/input/Input";
 import AllKeys from "./AllKeys";
-
+import './keys.css'
 const Keys = () => {
     const isAuth = useSelector(state => state.user.isAuth)
     const dispatch = useDispatch()
-    
+    const [cabinet, setCabinet] = useState('')
     useEffect(() => {
         dispatch(allKeys())
       }, [] )
+
+    
+    function addHandler(childRef) {
+        dispatch(addKey(cabinet));
+        childRef.current.HandleClear();
+    }
+    const childRef = useRef();
     return (
-        <div className="tab-wrapper">
+        <div>
+            <div className="tab-wrapper">
         <Table striped bordered size="sm" onClick={e => e.preventDefault()}>
             <thead>
                 <tr>
@@ -23,6 +32,16 @@ const Keys = () => {
             <AllKeys/>
             </Table>
         </div>
+            <div>
+            <Input ref = {childRef} type ="text" placeholder = "Добавить доступный кабинет" value={cabinet} setValue={setCabinet}/>
+            <div className="bton">
+            <Button className="popup__create" onClick={() => addHandler(childRef)}>Добавить</Button>
+            </div>
+                
+            </div>
+        </div>
+        
+        
     );
 };
 

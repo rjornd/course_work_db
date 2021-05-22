@@ -2,15 +2,19 @@ const SET_EMPLOYEES = "SET_EMPLOYEES"
 const SET_SELECTED_EMPLOYEE = "SET_SELECTED_EMPLOYEE"
 const SET_POPUP_GET_DISPLAY = "SET_POPUP_GET_DISPLAY"
 const SET_POPUP_TAKE_DISPLAY = "SET_POPUP_TAKE_DISPLAY"
+const SET_POPUP_ADD_DISPLAY = "SET_POPUP_ADD_DISPLAY"
 const SET_AVAILABLE_CABS = "SET_AVAILABLE_CABS"
 const SET_EMPL_KEYS = "SET_EMPL_KEYS"
 const SET_KEYS_FOR_THIS_CAB = "SET_KEYS_FOR_THIS_CAB"
 const SET_ALL_KEYS = "SET_ALL_KEYS"
+const SET_POPUP_CHANGE_DISPLAY = "SET_POPUP_CHANGE_DISPLAY"
 const defaultState = {
     employees: [],
     selectedEmployee: {},
     popupGetDisplay: 'none',
     popupTakeDisplay: 'none',
+    popupAddDisplay: 'none',
+    popupChangeDisplay: 'none',
     availableCabs: [],
     employeeKeys: [],
     keysForThisCab: [],
@@ -39,7 +43,12 @@ export default function employeeReducer(state = defaultState, action)
             return {
                 ...state,
                 popupTakeDisplay: action.payload
-            }    
+            }
+        case SET_POPUP_ADD_DISPLAY:
+            return {
+                ...state,
+                popupAddDisplay: action.payload
+            }
         case SET_AVAILABLE_CABS:
             return {
                 ...state,
@@ -60,6 +69,11 @@ export default function employeeReducer(state = defaultState, action)
                 ...state,
                 allKeys: action.payload
             }
+        case SET_POPUP_CHANGE_DISPLAY:
+            return {
+                ...state,
+                popupChangeDisplay: action.payload
+            }
         default:
             return state;
     }
@@ -68,6 +82,8 @@ export const setEmployees = (employees) => ({type: SET_EMPLOYEES, payload: emplo
 export const setSelectedEmployee = employee => ({type: SET_SELECTED_EMPLOYEE, payload: employee})
 export const setPopupGetDisplay = display => ({type: SET_POPUP_GET_DISPLAY, payload: display})
 export const setPopupTakeDisplay = display => ({type: SET_POPUP_TAKE_DISPLAY, payload: display})
+export const setPopupAddDisplay = display => ({type: SET_POPUP_ADD_DISPLAY, payload: display})
+export const setPopupChangeDisplay = display => ({type: SET_POPUP_CHANGE_DISPLAY, payload: display})
 export const setAvailableCabs = cabs => ({type: SET_AVAILABLE_CABS, payload: cabs})
 export const setEmplKeys = keys => ({type: SET_EMPL_KEYS, payload: keys})
 export const setkeysForThisCab = keys => ({type: SET_KEYS_FOR_THIS_CAB, payload: keys})

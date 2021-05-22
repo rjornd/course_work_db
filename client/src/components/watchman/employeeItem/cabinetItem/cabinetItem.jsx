@@ -17,6 +17,7 @@ const CabinetItem = ({cabinet}) => {
     const KeyItem = ({keyitem}, key) => {
         function clickHandle(e)
         {
+            
             dispatch(giveKey(selectedEmployee.emplid, keyitem.keyid))
         }
         return(
@@ -61,7 +62,7 @@ const CabinetItem = ({cabinet}) => {
     <tr>
         <td>{cabinet.cabinet}</td>
         <td>
-            <OverlayTrigger trigger="focus" placement="right" overlay={popover1}>
+            <OverlayTrigger trigger="focus" delay={{ show: 250, hide: 400 }} placement="right" overlay={popover1}>
             <Button onClick = {(e) => giveHandle(e)}>Выдать ключ</Button>
             </OverlayTrigger>
         </td>
@@ -71,7 +72,7 @@ const CabinetItem = ({cabinet}) => {
     <tr>
         <td>{cabinet.cabinet}</td>
         <td>
-            <OverlayTrigger trigger="focus" placement="right" overlay={popover2}>
+            <OverlayTrigger trigger="focus" delay={{ show: 250, hide: 400 }} placement="right" overlay={popover2}>
             <Button onClick = {(e) => giveHandle(e)}>Выдать ключ</Button>
             </OverlayTrigger>
         </td>

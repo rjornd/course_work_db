@@ -10,6 +10,8 @@ import { auth } from "../actions/user";
 import Watchman from "./watchman/Watchman";
 import { getEmployees } from '../actions/employees';
 import Keys from './Keys/Keys';
+import Logs from './Logs/Logs';
+import Cabs from './Cabs/Cabs';
 
 function App() {
   const isAuth = useSelector(state => state.user.isAuth)
@@ -35,6 +37,8 @@ function App() {
           <Switch>
             <Route exact path = "/" component = {Watchman}/>
             <Route exact path = "/keys" component = {Keys}/>
+            <Route exact path = "/logs" component = {Logs}/>
+            <Route exact path = "/cabs" component = {Cabs}/>
             <Redirect to = "/"/>
           </Switch>
         }

@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Col, Row} from 'react-bootstrap';
 
 import './watchman.css'
-import { setPopupGetDisplay, setPopupTakeDisplay, setSelectedEmployee } from '../../../reducers/employeeReducer';
-import { getCabs, getKeys } from '../../../actions/employees';
+import { setPopupGetDisplay, setPopupTakeDisplay, setSelectedEmployee, setPopupChangeDisplay } from '../../../reducers/employeeReducer';
+import { delEmployee, getCabs, getKeys } from '../../../actions/employees';
 const EmployeeItem = ({employee}, key) => {
     const dispatch = useDispatch()
     const currentUser = useSelector(state => state.user.currentUser)
@@ -20,6 +20,15 @@ const EmployeeItem = ({employee}, key) => {
         dispatch(getKeys(employee))
         dispatch(setPopupTakeDisplay('flex'))
     }
+    function delEmployeeHandle(e)
+    {
+        dispatch(delEmployee(employee.emplid))
+    }
+    function changeHandle(e)
+    {
+        dispatch(setSelectedEmployee(employee))
+        dispatch(setPopupChangeDisplay('flex'))
+    }
     return (
         <tr key={key}>
             <td>{employee.emplid}</td>
@@ -27,6 +36,8 @@ const EmployeeItem = ({employee}, key) => {
             <td>{employee.last_name}</td>
             <td><Button onClick = {(e) => giveKeyHandle(e)}>Выдать ключ</Button></td>
             <td><Button variant="warning" onClick = {(e) => takeKeyHandle(e)}>Принять ключ</Button></td>
+            <td><Button variant="warning" onClick = {(e) => changeHandle(e)}>Изменить</Button></td>
+            <td><Button variant="danger" onClick = {(e) => delEmployeeHandle(e)}>X</Button></td>
         </tr>
     );
 };

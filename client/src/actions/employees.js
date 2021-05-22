@@ -72,8 +72,7 @@ export const addAvCabinet =  (employee, cabinet) => {
         )
         dispatch(setAvailableCabs(response.data))
     } catch (e) {
-        dispatch(logout())
-        localStorage.removeItem('token');
+        alert(e?.response?.data?.message)
         console.log(e?.response?.data?.message)
     }
     }
@@ -140,6 +139,7 @@ export const keysForThisCab =  (cabinet) => {
 export const giveKey =  (employeeid, keyid) => {
     return async dispatch => {
     try {
+        console.log(employeeid)
         const response = await axios.post(
             `${API_URL}api/giveKey`, {employeeid, keyid}, 
         {
@@ -184,6 +184,79 @@ export const removeKey = (keyid) =>{
             }
             )
             dispatch(setAllKeys(response.data))
+        } catch (e) {
+           
+            console.log(e?.response?.data?.message)
+        }
+        }
+}
+
+export const addNewEmployee = (first_name, last_name) =>{
+    return async dispatch => {
+        
+        try {
+            const response = await axios.post(
+                `${API_URL}api/addNewEmployee`, {first_name, last_name},
+            {
+                headers:{'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+            }
+            )
+            dispatch(setEmployees(response.data))
+        } catch (e) {
+           
+            console.log(e?.response?.data?.message)
+        }
+        }
+}
+
+export const addKey = (cabinet) =>{
+    return async dispatch => {
+        try {
+            const response = await axios.post(
+                `${API_URL}api/addKey`, {cabinet},
+            {
+                headers:{'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+            }
+            )
+            dispatch(setAllKeys(response.data))
+        } catch (e) {
+           
+            console.log(e?.response?.data?.message)
+        }
+        }
+}
+
+export const delEmployee = (emplid) =>{
+    return async dispatch => {
+        try {
+            const response = await axios.post(
+                `${API_URL}api/delEmployee`, {emplid},
+            {
+                headers:{'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+            }
+            )
+            dispatch(setEmployees(response.data))
+        } catch (e) {
+           
+            console.log(e?.response?.data?.message)
+        }
+        }
+}
+
+export const updateEmployee = (employee) =>{
+    return async dispatch => {
+        try {
+            const response = await axios.post(
+                `${API_URL}api/updateEmployee`, {employee},
+            {
+                headers:{'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+            }
+            )
+            dispatch(setEmployees(response.data))
         } catch (e) {
            
             console.log(e?.response?.data?.message)

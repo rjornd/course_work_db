@@ -4,12 +4,14 @@ import thunk from "redux-thunk";
 import userReducer from "./userReducer";
 import appReducer from "./appReducer";
 import employeeReducer from "./employeeReducer";
+import logsReducer from "./logsReducer"
 const applyMiddleware = require("redux").applyMiddleware
 
 const rootReducer = combineReducers({
     employees: employeeReducer,
     user: userReducer,
-    app: appReducer
+    app: appReducer,
+    logs: logsReducer
 })
 
 export const store = createStore(rootReducer,  composeWithDevTools(applyMiddleware(thunk)));

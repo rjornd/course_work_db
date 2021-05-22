@@ -10,6 +10,25 @@
 
     let mysqldb = {};
 
+    mysqldb.appendLogs = (log) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('INSERT logs(subjtype, subjid, act, objtype, objid, time) VALUES(?,?,?,?,?,?)', [
+                log.subjtype,
+                log.subjid,
+                log.act,
+                log.objtype,
+                log.objid,
+                new Date().toISOString().slice(0, 19).replace('T', ' ')
+            ],(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
     mysqldb.all = (req) => {
         return new Promise((resolve, reject) => {
             pool.query('SELECT * from watchmans', (err, rows, fields) => {
@@ -97,13 +116,15 @@
         })
     }
 
-    mysqldb.takeKey = (keyid) =>
+    mysqldb.takeKey = (emplid, keyid) =>
     {
         return new Promise((resolve, reject) => {
             pool.query('UPDATE `keys` SET employeeid = NULL WHERE keyid = ?', [keyid] ,(err, rows, fields) => {
                 if (err) {
+                    
                     return reject(err)
                 }
+                
                 return resolve(rows);
             })
         })
@@ -164,6 +185,8 @@
                 if (err) {
                     return reject(err)
                 }
+                
+               
                 return resolve(rows);
             })
         })
@@ -181,5 +204,68 @@
         })
     }
 
+    mysqldb.addKey = (cabinet) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('INSERT `keys`(cabinet) VALUES (?)', [cabinet] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.getLogs = () =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('SELECT * FROM `logs`' ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.addNewEmployee = (empl) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('INSERT employees(first_name, last_name) VALUES(?,?)', [empl.first_name, empl.last_name] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+    mysqldb.delEmployee = (emplid) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('DELETE FROM employees WHERE emplid = ?', [emplid] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    mysqldb.updateEmployee = (employee) =>
+    {
+        return new Promise((resolve, reject) => {
+            pool.query('UPDATE employees SET first_name = ?, last_name = ? WHERE emplid = ?',
+             [employee.first_name,
+                 employee.last_name,
+                  employee.emplid] ,(err, rows, fields) => {
+                if (err) {
+                    return reject(err)
+                }
+                return resolve(rows);
+            })
+        })
+    }
+
+    
         
 module.exports = mysqldb

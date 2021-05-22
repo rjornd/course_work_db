@@ -7,6 +7,7 @@ const Input = forwardRef((props, ref) => {
         HandleClear() {
             props.setValue('');
     }
+        
 }))
     return (
         <input onChange={(event)=> props.setValue(event.target.value)}
