@@ -1,7 +1,8 @@
 # 1. Классификация АС
-    АС Вахтера принадлежит ко 2 группе.
-    Вторая группа включает АС, в которых пользователи имеют одинаковые права доступа (полномочия) ко всей информации АС, обрабатываемой и (или) хранимой на носителях различного уровня конфиденциальности.
-    Группа содержит два класса - 2Б и 2А.
+- АС Вахтера принадлежит ко 2 группе.
+- Вторая группа включает АС, в которых пользователи имеют одинаковые права доступа (полномочия) ко всей информации АС, обрабатываемой и (или) хранимой на носителях различного уровня конфиденциальности.
+- Группа содержит два класса - 2Б и 2А.
+- Был выбран класс 2Б.
 # 2. Требования по защите информации от НСД для АС для класса 2Б
 Обозначения:
   &quot; - &quot; - нет требований к данному классу;
@@ -41,5 +42,117 @@
 | 4.5. Наличие средств восстановления СЗИ НСД | + |
 | 4.6. Использование сертифицированных средств защиты | - |
 
-# 1.1 Идентификация, проверка подлинности и контроль доступа субъектов в систему
+## 1.1 Идентификация, проверка подлинности и контроль доступа субъектов в систему
 Контроль доступа осуществляется следующим образом:
+Клиент отправляет запрос на api сервера:
+```js
+export const login =  (login, password) => {
+    return async dispatch => {
+    try {
+        const response = await axios.post(`${API_URL}api/auth/login`, {
+            login,
+            password
+        })
+        //сохраняем пользователя в reducer
+        dispatch(setUser(response.data.user))
+        //сохраняем jwt токен на локальное хранилище устройства
+        localStorage.setItem('token', response.data.token)
+    } catch (e) {
+        alert(e?.response?.data?.message)
+    }
+    }
+}
+```
+Запрос выглядит следующим образом:
+```json
+{
+  "first_name": "firstname",
+  "last_name": "lastname",
+  "login": "login",
+  "password": "123das"
+}
+```
+Сервер принимает запрос:
+```js
+router.post('/login',
+async (req, res) => {
+    try{
+        const errors = validationResult(req)
+        if (!errors.isEmpty())
+        {
+            return res.status(400).json({message: "Uncorrect request", errors})
+        }
+        const {login, password} = req.body;
+        // ищем пользователя с указанным в запросе логином
+        const user = await mysqldb.findLogin(login)
+        if(!user?.watchmanid)
+        {
+            return res.status(400).json({message: "user not found :( "})
+        }
+        //сравниваем хеш-сумму пароля пользователя с указанным логином и хеш-сумму пароля, хранящуюся в БД
+        const isPassValid = bcrypt.compareSync(password, user.password)
+        if (!isPassValid)
+        {
+            return res.status(400).json({message: "invalid password"})
+        }
+        //Создаем jwt токен если пароль верный
+        const token = jwt.sign({id: user.watchmanid}, config.get("secretKey"), {expiresIn: "1h"})
+        //и отправляем его клиенту
+        return res.json({
+            token,
+            user : {
+                watchmanid: user.watchmanid,
+                first_name: user.first_name,
+                last_name: user.last_name
+            }
+        })
+    } catch(e) 
+    {
+        console.log(e)
+        res.send({message: 'Server error'})
+    }
+})
+```
+Авторизация: 
+Клиент отправляет хранящийся на локальном устройстве jwt токен в запросе к api сервера.
+```js
+export const auth =  (login, password) => {
+    return async dispatch => {
+    try {
+        const response = await axios.get(
+            `${API_URL}api/auth/auth`, 
+        {
+            headers:{Authorization: `Bearer ${localStorage.getItem('token')}`}
+        }
+        )
+        dispatch(setUser(response.data.user))
+        localStorage.setItem('token', response.data.token);
+    } catch (e) {
+        localStorage.removeItem('token');
+    }
+}
+```
+Сервер в каждой функции api будет работать с клиентом через auth middleware - это фильтр обработки HTTP запроса для проверки аутентификации пользователя, он реализован следующим образом:
+```js
+module.exports = (req, res, next) => {
+    if (req.method === 'OPTIONS')
+    {
+        return next()
+    }
+    try {
+        const token = req.headers.authorization.split(' ')[1]
+        //получаем из запроса токен
+        if (!token)
+        {
+            return res.status(401).json({message: "Auth error"})
+        }
+        //декодирум токен с помощью секретного ключа
+        const decoded = jwt.verify(token, config.get('secretKey'))
+        //добавляем к запросу пользователя декодированный id  текущего пользователя, который будет использоваться в функциях api, например, для записи в логи.
+        req.user = decoded
+        next()
+    } catch (e) {
+        return res.status(401).json({message: "Auth error"})
+    }
+}
+```
