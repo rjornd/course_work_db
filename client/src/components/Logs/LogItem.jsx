@@ -67,7 +67,7 @@ const LogItem = ({log}, key) => {
                                       </thead>
                                       <tbody>
                                             <tr>
-                                            <th>{log.obj.keyid}</th>
+                                            <th>{log.objid}</th>
                                               <th>{log.obj.cabinet}</th>
                                             </tr>
                                       </tbody>
@@ -77,7 +77,7 @@ const LogItem = ({log}, key) => {
                           );
                         return (
                             <OverlayTrigger trigger="focus" placement="right" overlay={popover}>
-                                <Button variant="light">{log?.obj?.keyid}</Button>
+                                <Button variant="light">{log?.obj?.keyid ? log.obj.keyid : "удален"}</Button>
                             </OverlayTrigger>
                          )
                     }

@@ -61,6 +61,13 @@ async (req, res) => {
             return res.status(400).json({message: "invalid password"})
         }
         const token = jwt.sign({id: user.watchmanid}, config.get("secretKey"), {expiresIn: "1h"})
+        await mysqldb.appendLogs({
+            subjtype: "Вахтёр", 
+            subjid: user.watchmanid,
+            act: "Вошел",
+            objtype: "В систему",
+            objid: 0
+        })
         return res.json({
             token,
             user : {

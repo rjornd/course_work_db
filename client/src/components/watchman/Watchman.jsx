@@ -24,7 +24,7 @@ const Watchman = () => {
       dispatch(setPopupAddDisplay('flex'))
     }
     return ( 
-        
+        currentUser ? 
         <label onClick={e => e.preventDefault()}>
             <div>
             Привет, {currentUser.first_name + " " + currentUser.last_name}
@@ -59,7 +59,8 @@ const Watchman = () => {
     <PopupChange/>
     </div>
     <Button onClick = {(e) => addEmployeeHandle(e)}>Добавить сотрудника</Button>
-    </label>
+    </label> :
+    <div>Ошибка подключения к БД</div>
         
     );
 };
