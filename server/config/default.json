@@ -1,7 +1,0 @@
-{
-    "serverPort": 5000,
-    "dbUrl": "mongodb+srv://capusta:gold_chus1337@cluster0.ptndo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    "secretKey": "sssuper---secret-key",
-    "filePath": "./files",
-    "staticPath": "./static"
-}
