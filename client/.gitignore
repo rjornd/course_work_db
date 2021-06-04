@@ -3,10 +3,10 @@
 
 # testing
 /coverage
-
+server/config/
 # production
 /build
-
+server/config/
 # misc
 .DS_Store
 .env.local
