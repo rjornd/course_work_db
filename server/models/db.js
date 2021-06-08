@@ -42,7 +42,7 @@
 
     mysqldb.reg = (req) => {
         return new Promise((resolve, reject) => {
-            pool.query('insert into watchmans(first_name, last_name, login, password) values (?,?,?,?)', 
+            pool.query('INSERT INTO watchmans(first_name, last_name, login, password) values (?,?,?,?)', 
             [   req.first_name,
                 req.last_name,
                 req.login,
@@ -70,7 +70,7 @@
 
     mysqldb.findLogin = (login) => {
         return new Promise((resolve, reject) => {
-            pool.query('Select * from watchmans where login = ?', [login],
+            pool.query('SELECT * FROM watchmans WHERE login = ?', [login],
                 (err, rows, fields) => {
                 if (err) {
                     return reject(err);
@@ -83,7 +83,7 @@
     mysqldb.employees = () =>
     {
         return new Promise((resolve, reject) => {
-            pool.query('select * from employees', (err, rows, fields) => {
+            pool.query('SELECT * FROM employees', (err, rows, fields) => {
                 if (err) {
                     return reject(err)
                 }
